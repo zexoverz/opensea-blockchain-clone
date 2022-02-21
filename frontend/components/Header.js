@@ -42,7 +42,9 @@ function Header() {
         </div>
 
         <div className={style.headerItems}>
-            <div className={style.headerItem}> Collections </div>
+            <Link href='/collections/0x95A0b1287259B9643C1687CE21F6898A4221E562'>
+                <div className={style.headerItem}> Collections </div>
+            </Link>
             <div className={style.headerItem}> stats </div>
             <div className={style.headerItem}> Resources </div>
             <div className={style.headerItem}> Create </div>

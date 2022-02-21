@@ -27,12 +27,30 @@ function Header() {
         <Link href="/">
             <div className={style.logoContainer}>
                 <Image src={openseaLogo} height={40} width={40} />
+                <div className={style.logoText}>Opensea</div>
             </div>
         </Link>
         
         <div className={style.searchBar}>
             <div className={style.searchIcon}>
                 <AiOutlineSearch />
+            </div>
+            <input
+                className={style.searchInput}
+                placeholder="Search Items, collections, and accounts"
+            />
+        </div>
+
+        <div className={style.headerItems}>
+            <div className={style.headerItem}> Collections </div>
+            <div className={style.headerItem}> stats </div>
+            <div className={style.headerItem}> Resources </div>
+            <div className={style.headerItem}> Create </div>
+            <div className={style.headerIcon}>
+                <CgProfile/>
+            </div>
+            <div className={style.headerIcon}>
+                <MdOutlineAccountBalanceWallet/>
             </div>
         </div>
     </div>

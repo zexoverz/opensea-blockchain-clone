@@ -3,7 +3,7 @@ import React from 'react'
 
 const style = {
     wrapper: `relative`,
-    container: `before:content-[''] before:bg-red-500 before:absolute before:top-0 before:left-0 before:right-0 before:bottom-0 before:bg-[url('https://lh3.googleusercontent.com/ujepnqpnL0nDQIHsWxlCXzyw4pf01yjz1Jmb4kAQHumJAPrSEj0-e3ABMZlZ1HEpJoqwOcY_kgnuJGzfXbd2Tijri66GXUtfN2MXQA=s250')] before:bg-cover before:bg-center before:opacity-30 before:blur`,
+    container: `before:content-[''] before:bg-red-500 before:absolute before:top-0 before:left-0 before:right-0 before:bottom-0 before:bg-[url('https://lh3.googleusercontent.com/ixp0g41_fLFXaATg_WHPBEAGFg0EuoNp4fB8Fv0IncYDN8E5Fgs-JQOVI0SFhISGpQSAy46Ji2eVUsNWuBRSJYtrjRXbnIZGu9XtdQ=s550')] before:bg-cover before:bg-center before:opacity-30 before:blur`,
     contentWrapper: `flex h-screen relative justify-center flex-wrap items-center`,
     copyContainer: `w-1/2`,
     title: `relative text-white text-[46px] font-semibold`,
@@ -20,7 +20,56 @@ const style = {
 
 const Hero = () => {
   return (
-    <div>Hero</div>
+    <div className={style.wrapper}>
+        <div className={style.container}>
+            <div className={style.contentWrapper}>
+                <div className={style.copyContainer}>
+                    <div className={style.title}>
+                        Discover, collect, and sell extraordinary NFTs
+                    </div>
+                    <div className={style.description}>
+                    OpenSea is the world&apos;s first and largest NFT marketplace
+                    </div>
+                    <div className={style.ctaContainer}>
+                        <button className={style.accentedButton}>Explore</button>
+                        <button className={style.button}>Create</button>
+                    </div>
+                </div>
+
+                <div className={style.cardContainer}>
+                    <img
+                        className="rounded-t-lg"
+                        src="https://lh3.googleusercontent.com/ixp0g41_fLFXaATg_WHPBEAGFg0EuoNp4fB8Fv0IncYDN8E5Fgs-JQOVI0SFhISGpQSAy46Ji2eVUsNWuBRSJYtrjRXbnIZGu9XtdQ=s550"
+                        alt=""
+                    />
+
+                    <div className={style.infoContainer}>
+                        <img
+                            className="h-[2.25rem] rounded-full"  
+                            src="https://lh3.googleusercontent.com/D4G8qyNkB6lLYpiDsy7HpEjjErxJGoJH8SR_xnbBJNPQdWkfOk1djAQRuSB6j7kLJgSm5c7AuoX8sP-01q5loJg1IG-pYDSVQYju=s80"
+                            alt=""
+                        />
+
+                        <div className={style.author}>
+                            <div className={style.name}>
+                              Digital Abstraction #93  
+                            </div>
+
+                            <a
+                                className="text-[#1868b7]"
+                                href="https://opensea.io/assets/0x495f947276749ce646f68ac8c248420045cb7b5e/67428853302242778530511456259079558737499986186560837533912873241419486068737"
+                            >
+                                zhannetpodobed    
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            
+        </div>
+    </div>   
   )
 }
 

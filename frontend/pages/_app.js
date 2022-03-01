@@ -7,12 +7,14 @@ const connectors = {
 }
 
 function MyApp({ Component, pageProps }) {
-  <ThirdwebWeb3Provider
-    supportedChainIds={supportedChainIds}
-    connectors = {connectors}
-  >
-    <Component {...pageProps} />
-  </ThirdwebWeb3Provider>
+  return (
+    <ThirdwebWeb3Provider
+      supportedChainIds={supportedChainIds}
+      connectors = {connectors}
+    >
+      <Component {...pageProps} />
+    </ThirdwebWeb3Provider>
+  )
 }
 
 export default MyApp

@@ -57,6 +57,27 @@ const Collection = () => {
       setNfts(nfts)
     })()
   }, [nftModule])
+
+
+  const marketPlaceModule = useMemo(() => {
+    if (!provider) return
+
+    const sdk = new ThirdwebSDK(
+      provider.getSigner(),
+      'https://eth-rinkeby.alchemyapi.io/v2/7xTTO9NMW8awh-bYeIWgXO9syXGXT4Pu'
+    )
+    return sdk.getMarketplaceModule(
+      '0xf47549Bf39e1762927936702528DC359Fa33f944'
+    )
+  }, [provider])
+
+  // get all listings in the collection
+  useEffect(() => {
+    if (!marketPlaceModule) return
+    ;(async () => {
+      setListings(await marketPlaceModule.getAllListings())
+    })()
+  }, [marketPlaceModule])
   
   return (
     <Link href="/">

@@ -18,7 +18,7 @@ const style = {
 }
 
 
-const [nftId] = () => {
+const Nft = () => {
   const { provider } = useWeb3()
   const [selectedNft, setSelectedNft] = useState()
   const [listings, setListings] = useState([])
@@ -28,8 +28,7 @@ const [nftId] = () => {
     if (!provider) return
 
     const sdk = new ThirdwebSDK(
-      provider.getSigner(),
-      'https://eth-rinkeby.alchemyapi.io/v2/7xTTO9NMW8awh-bYeIWgXO9syXGXT4Pu'
+      provider.getSigner()
     )
     return sdk.getNFTModule('0x95A0b1287259B9643C1687CE21F6898A4221E562')
   }, [provider])
@@ -50,8 +49,7 @@ const [nftId] = () => {
     if (!provider) return
 
     const sdk = new ThirdwebSDK(
-      provider.getSigner(),
-      'https://eth-rinkeby.alchemyapi.io/v2/7xTTO9NMW8awh-bYeIWgXO9syXGXT4Pu'
+      provider.getSigner()
     )
 
     return sdk.getMarketplaceModule(
@@ -93,4 +91,4 @@ const [nftId] = () => {
   )
 }
 
-export default [nftId]
+export default Nft

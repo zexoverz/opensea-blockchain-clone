@@ -23,7 +23,7 @@ const GeneralDetails = ({ selectedNft }) => {
   return (
     <div className={style.wrapper}>
       <div className={style.infoContainer}>
-        <div className={style.accent}>Bored Ape Yacht Club</div>
+        <div className={style.accent}>Karafuru</div>
         <div className={style.nftTitle}>{selectedNft?.name}</div>
         <div className={style.otherInfo}>
           <div className={style.ownedBy}>

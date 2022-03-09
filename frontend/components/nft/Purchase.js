@@ -37,19 +37,28 @@ const MakeOffer = ({ isListed, selectedNft, listings, marketPlaceModule }) => {
       },
     })
 
+  const errorPurchase = (error, toastHandler = toast) => 
+    toastHandler.error(`insufficient funds for gas * price`, {
+      style: {
+        background: '#04111d',
+      },
+    })
+
   const buyItem = async (
     listingId = selectedMarketNft.id,
     quantityDesired = 1,
     module = marketPlaceModule
   ) => {
-    await module
-      .buyoutDirectListing({
+    try{
+      await module.buyoutDirectListing({
         listingId: listingId,
         quantityDesired: quantityDesired,
       })
-      .catch((error) => console.error(error))
-
-    confirmPurchase()
+  
+      confirmPurchase()
+    }catch(error){
+      errorPurchase(error)
+    }
   }
 
   return (

@@ -97,7 +97,6 @@ const Collection = () => {
 
     const collectionData = await sanityClient.fetch(query)
 
-    console.log(collectionData, '🔥')
 
     // the query returns 1 object inside of an array
     await setCollection(collectionData[0])
@@ -206,7 +205,7 @@ const Collection = () => {
           <div className={style.description}>{collection?.description}</div>
         </div>
       </div>
-      <div className="flex flex-wrap ">
+      <div className="flex flex-wrap mx-10">
         {nfts.map((nftItem, id) => (
           <NFTCard
             key={id}

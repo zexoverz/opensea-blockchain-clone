@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useMemo} from 'react'
+import React, {useState, useEffect, useMemo, useCallback} from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useWeb3 } from '@3rdweb/hooks'
@@ -57,7 +57,6 @@ const Collection = () => {
 
     ;(async () => {
       const nfts = await nftModule.getAll()
-
       setNfts(nfts)
     })()
   }, [nftModule])
@@ -70,9 +69,11 @@ const Collection = () => {
       provider.getSigner()
     )
     return sdk.getMarketplaceModule(
-      '0xf47549Bf39e1762927936702528DC359Fa33f944'
+      '0x7e97d75812Da68Ad04977F6183aB813aA595e3Cc'
     )
   }, [provider])
+
+
 
   // get all listings in the collection
   useEffect(() => {

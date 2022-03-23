@@ -41,6 +41,7 @@ const Home = () => {
         walletAddress: address
       }
 
+
       const result = await client.createIfNotExists(userDoc)
 
       welcomeUser(result.userName)

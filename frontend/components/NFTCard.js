@@ -49,6 +49,10 @@ const NFTCard = ({nftItem, title, listings}) => {
       <div className={style.imgContainer}>
         <img src={nftItem.image} alt={nftItem.name} className={style.nftImg} />
       </div>
+
+      
+
+
       <div className={style.details}>
         <div className={style.info}>
           <div className={style.infoLeft}>
@@ -67,14 +71,22 @@ const NFTCard = ({nftItem, title, listings}) => {
                 {price}
               </div>
             </div>
-          )}
+          ) 
+          }
         </div>
-        <div className={style.likes}>
-          <span className={style.likeIcon}>
-            <BiHeart />
-          </span>{' '}
-          {nftItem.likes}
-        </div>
+        {
+          isListed && 
+          (
+            <div className={style.likes}>
+              <span className={style.likeIcon}>
+                <BiHeart />
+              </span>{' '}
+              {nftItem.likes}
+            </div>
+          )
+        }
+
+      
       </div>
     </div>
   )

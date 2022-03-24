@@ -1,6 +1,5 @@
-import React, {useState, useEffect, useMemo, useCallback} from 'react'
+import React, {useState, useEffect, useMemo} from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import { useWeb3 } from '@3rdweb/hooks'
 import { ThirdwebSDK } from '@3rdweb/sdk'
 import { client } from '../../lib/sanityClient'
@@ -51,16 +50,6 @@ const Collection = () => {
     return sdk.getNFTModule(collectionId)
   }, [provider])
 
-  // get all NFTs in the collection 
-  useEffect(() => {
-    if(!nftModule) return
-
-    ;(async () => {
-      const nfts = await nftModule.getAll()
-      setNfts(nfts)
-    })()
-  }, [nftModule])
-
 
   const marketPlaceModule = useMemo(() => {
     if (!provider) return
@@ -73,15 +62,49 @@ const Collection = () => {
     )
   }, [provider])
 
+  const listingFilter = (nfts, listing) => {
+
+    console.log(nfts, "listing")
 
 
-  // get all listings in the collection
-  useEffect(() => {
-    if (!marketPlaceModule) return
-    ;(async () => {
-      setListings(await marketPlaceModule.getAllListings())
-    })()
-  }, [marketPlaceModule])
+    let result = nfts.filter(nft => {
+      for (let item of listing){
+        if(item.asset.id === nft.id){
+          return true
+        }
+      }
+
+      return false
+    })
+
+    console.log(result, "result")
+    return result;
+  }
+
+
+    // get all NFTs in the collection 
+    useEffect(() => {
+      if(!nftModule || !marketPlaceModule) return
+  
+      ;(async () => {
+        const nfts = await nftModule.getAll()
+        const listing = await marketPlaceModule.getAllListings()
+
+        setNfts(listingFilter(nfts, listing))
+        setListings(listing)
+      })()
+    }, [nftModule, marketPlaceModule])
+
+
+
+  // // get all listings in the collection
+  // useEffect(() => {
+  //   if (!marketPlaceModule) return
+  //   ;(async () => {
+  //     let listing = await 
+  //     setListings(listingFilter(nfts))
+  //   })()
+  // }, [marketPlaceModule])
   
   const fetchCollectionData = async (sanityClient = client) => {
     const query = `*[_type == "marketItems" && contractAddress == "${collectionId}" ] {

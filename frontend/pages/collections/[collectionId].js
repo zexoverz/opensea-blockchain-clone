@@ -1,13 +1,12 @@
 import React, {useState, useEffect, useMemo} from 'react'
 import { useRouter } from 'next/router'
-import { useWeb3 } from '@3rdweb/hooks'
-import { ThirdwebSDK } from '@3rdweb/sdk'
 import { client } from '../../lib/sanityClient'
 import Header from '../../components/Header'
 import { CgWebsite } from 'react-icons/cg'
 import { AiOutlineInstagram, AiOutlineTwitter } from 'react-icons/ai'
 import { HiDotsVertical } from 'react-icons/hi'
 import NFTCard from '../../components/NFTCard'
+import { useContract, useActiveListings } from '@thirdweb-dev/react'
 
 const style = {
   bannerImageContainer: `h-[30vh] w-screen overflow-hidden flex justify-center items-center`,
@@ -34,77 +33,12 @@ const style = {
 
 const Collection = () => {
   const router = useRouter()
-  const { provider } = useWeb3()
   const { collectionId } = router.query
   const [collection, setCollection] = useState({})
   const [nfts, setNfts] = useState([])
-  const [listings, setListings] = useState([])
+  const { contract:marketPlace } = useContract("0xF0511192a0557f9F4f00aA1FE5C47d14149C250c", "marketplace")
+  const {data:listings} = useActiveListings(marketPlace);
 
-  const nftModule = useMemo(() => {
-    if(!provider) return
-
-    const sdk = new ThirdwebSDK(
-      provider.getSigner()
-    )
-    
-    return sdk.getNFTModule(collectionId)
-  }, [provider])
-
-
-  const marketPlaceModule = useMemo(() => {
-    if (!provider) return
-
-    const sdk = new ThirdwebSDK(
-      provider.getSigner()
-    )
-    return sdk.getMarketplaceModule(
-      '0x7e97d75812Da68Ad04977F6183aB813aA595e3Cc'
-    )
-  }, [provider])
-
-  const listingFilter = (nfts, listing) => {
-
-    console.log(nfts, "listing")
-
-
-    let result = nfts.filter(nft => {
-      for (let item of listing){
-        if(item.asset.id === nft.id){
-          return true
-        }
-      }
-
-      return false
-    })
-
-    console.log(result, "result")
-    return result;
-  }
-
-
-    // get all NFTs in the collection 
-    useEffect(() => {
-      if(!nftModule || !marketPlaceModule) return
-  
-      ;(async () => {
-        const nfts = await nftModule.getAll()
-        const listing = await marketPlaceModule.getAllListings()
-
-        setNfts(listingFilter(nfts, listing))
-        setListings(listing)
-      })()
-    }, [nftModule, marketPlaceModule])
-
-
-
-  // // get all listings in the collection
-  // useEffect(() => {
-  //   if (!marketPlaceModule) return
-  //   ;(async () => {
-  //     let listing = await 
-  //     setListings(listingFilter(nfts))
-  //   })()
-  // }, [marketPlaceModule])
   
   const fetchCollectionData = async (sanityClient = client) => {
     const query = `*[_type == "marketItems" && contractAddress == "${collectionId}" ] {
@@ -192,7 +126,7 @@ const Collection = () => {
         <div className={style.midRow}>
           <div className={style.statsContainer}>
             <div className={style.collectionStat}>
-              <div className={style.statValue}>{nfts.length}</div>
+              <div className={style.statValue}>{listings?.length}</div>
               <div className={style.statName}>items</div>
             </div>
             <div className={style.collectionStat}>
@@ -204,7 +138,7 @@ const Collection = () => {
             <div className={style.collectionStat}>
               <div className={style.statValue}>
                 <img
-                  src="https://storage.opensea.io/files/6f8e2979d428180222796ff4a33ab929.svg"
+                  src="https://cdn.iconscout.com/icon/free/png-256/ethereum-1-283135.png"
                   alt="eth"
                   className={style.ethLogo}
                 />
@@ -215,7 +149,7 @@ const Collection = () => {
             <div className={style.collectionStat}>
               <div className={style.statValue}>
                 <img
-                  src="https://storage.opensea.io/files/6f8e2979d428180222796ff4a33ab929.svg"
+                  src="https://cdn.iconscout.com/icon/free/png-256/ethereum-1-283135.png"
                   alt="eth"
                   className={style.ethLogo}
                 />
@@ -230,10 +164,10 @@ const Collection = () => {
         </div>
       </div>
       <div className="flex flex-wrap mx-10">
-        {nfts.map((nftItem, id) => (
+        {listings?.map((nftItem, id) => (
           <NFTCard
             key={id}
-            nftItem={nftItem}
+            nftItem={nftItem.asset}
             title={collection?.title}
             listings={listings}
           />

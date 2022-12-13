@@ -1,12 +1,11 @@
 import Header from '../../components/Header'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useWeb3 } from '@3rdweb/hooks'
-import { ThirdwebSDK } from '@3rdweb/sdk'
 import { useRouter } from 'next/router'
 import NFTImage from '../../components/nft/NFTImages'
 import GeneralDetails from '../../components/nft/GeneralDetails'
 import ItemActivity from '../../components/nft/ItemActivity'
 import Purchase from '../../components/nft/Purchase'
+import { useContract, useActiveListings } from '@thirdweb-dev/react'
 
 
 const style = {
@@ -19,51 +18,34 @@ const style = {
 
 
 const Nft = () => {
-  const { provider } = useWeb3()
   const [selectedNft, setSelectedNft] = useState()
-  const [listings, setListings] = useState([])
   const router = useRouter()
-  const collectionId = "0x95A0b1287259B9643C1687CE21F6898A4221E562"
+  const { nftId } = router.query
+  const collectionId = "0x66Eb8F1c2D5a8d38b461013cA7A2830497331590"
+  const { contract:marketPlace } = useContract("0xF0511192a0557f9F4f00aA1FE5C47d14149C250c", "marketplace")
+  const {data:listings} = useActiveListings(marketPlace);
 
-  const nftModule = useMemo(() => {
-    if (!provider) return
+  const nftFilter = (list) => {
+    for(let item of list){
+      if(item.asset.id == nftId){
+        return item.asset
+      }
+    }
 
-    const sdk = new ThirdwebSDK(
-      provider.getSigner()
-    )
-    return sdk.getNFTModule(collectionId)
-  }, [provider])
-
-  // get all NFTs in the collection
-  useEffect(() => {
-    if (!nftModule) return
-    ;(async () => {
-      const nfts = await nftModule.getAll()
-
-      const selectedNftItem = nfts.find((nft) => nft.id === router.query.nftId)
-
-      setSelectedNft(selectedNftItem)
-    })()
-  }, [nftModule])
-
-  const marketPlaceModule = useMemo(() => {
-    if (!provider) return
-
-    const sdk = new ThirdwebSDK(
-      provider.getSigner()
-    )
-
-    return sdk.getMarketplaceModule(
-      '0x7e97d75812Da68Ad04977F6183aB813aA595e3Cc'
-    )
-  }, [provider])
+    return null;
+  }
 
   useEffect(() => {
-    if (!marketPlaceModule) return
-    ;(async () => {
-      setListings(await marketPlaceModule.getAllListings())
-    })()
-  }, [marketPlaceModule])
+    if(listings){
+      let selected = nftFilter(listings);
+
+      setSelectedNft(selected)
+    }
+  }, [listings])
+
+  
+  
+ 
   
   
   return (
@@ -81,7 +63,7 @@ const Nft = () => {
                 isListed={router.query.isListed}
                 selectedNft={selectedNft}
                 listings={listings}
-                marketPlaceModule={marketPlaceModule}
+                marketPlaceModule={marketPlace}
                 collectionId={collectionId}
               />
             </div>

@@ -4,6 +4,19 @@ import { HiTag } from 'react-icons/hi'
 import { IoMdWallet } from 'react-icons/io'
 import toast, { Toaster } from 'react-hot-toast'
 
+import {
+  useMetamask,
+  useNetwork,
+  useNetworkMismatch,
+  useAddress
+} from "@thirdweb-dev/react";
+
+import {
+  ChainId,
+  NATIVE_TOKENS,
+} from "@thirdweb-dev/sdk";
+import { ethers } from 'ethers'
+
 
 const style = {
   button: `mr-8 flex items-center py-2 px-12 rounded-lg cursor-pointer`,
@@ -15,9 +28,15 @@ const MakeOffer = ({ isListed, selectedNft, listings, marketPlaceModule,  }) => 
   const router = useRouter()
   const [selectedMarketNft, setSelectedMarketNft] = useState()
   const [enableButton, setEnableButton] = useState(false)
+  const address = useAddress();
+  const connectWithMetamask = useMetamask();
+
+  // Hooks to detect user is on the right network and switch them if they are not
+  const networkMismatch = useNetworkMismatch();
+  const [, switchNetwork] = useNetwork();
 
   useEffect(() => {
-    if (!listings || isListed === 'false') return
+    if (!listings || isListed === 'false' || !selectedNft) return
     ;(async () => {
       setSelectedMarketNft(
         listings.find((marketNft) => marketNft.asset.id === selectedNft.id)
@@ -53,30 +72,45 @@ const MakeOffer = ({ isListed, selectedNft, listings, marketPlaceModule,  }) => 
     }, )
 
     
-
-    
-    router.push(`/collections/${collectionId}`);
+    router.push(`/collections/${'0x66Eb8F1c2D5a8d38b461013cA7A2830497331590'}`);
   }
     
 
-  const errorPurchase = (error) => 
-    toast.error(`insufficient funds for gas * price`, {
+  const errorPurchase = (error) => {
+    console.log(error)
+    toast.error(`Error Purchase`, {
       style: {
         background: '#04111d',
       },
       position: "top-center"
     })
+  }
+    
 
   const buyItem = async (
     listingId = selectedMarketNft.id,
     quantityDesired = 1,
-    module = marketPlaceModule
+    marketPlace = marketPlaceModule
   ) => {
     try{
-      await module.buyoutDirectListing({
-        listingId: listingId,
-        quantityDesired: quantityDesired,
-      })
+      // Ensure user is on the correct network
+      if (networkMismatch) {
+        switchNetwork && switchNetwork(ChainId.Goerli);
+        return;
+      }
+
+      if(!address){
+        console.log("ADDRESS NOT FOUND")
+        connectWithMetamask()
+        return
+      }
+
+
+      await marketPlace.buyoutListing(
+        listingId,
+        quantityDesired,
+        address
+      )
   
       confirmPurchase()
     }catch(error){

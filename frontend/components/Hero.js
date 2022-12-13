@@ -40,14 +40,14 @@ const Hero = () => {
                     <img
                         className="rounded-t-lg"
                         src="https://lh3.googleusercontent.com/ixp0g41_fLFXaATg_WHPBEAGFg0EuoNp4fB8Fv0IncYDN8E5Fgs-JQOVI0SFhISGpQSAy46Ji2eVUsNWuBRSJYtrjRXbnIZGu9XtdQ=s550"
-                        alt=""
+                        alt="hero1"
                     />
 
                     <div className={style.infoContainer}>
                         <img
                             className="h-[2.25rem] rounded-full"  
                             src="https://lh3.googleusercontent.com/D4G8qyNkB6lLYpiDsy7HpEjjErxJGoJH8SR_xnbBJNPQdWkfOk1djAQRuSB6j7kLJgSm5c7AuoX8sP-01q5loJg1IG-pYDSVQYju=s80"
-                            alt=""
+                            alt="hero2"
                         />
 
                         <div className={style.author}>

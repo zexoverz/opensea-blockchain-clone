@@ -7,8 +7,8 @@
   },
   "dependencies": {
     "@sanity/client": "^3.1.0",
-    "@thirdweb-dev/react": "^3.6.7",
-    "@thirdweb-dev/sdk": "^3.6.7",
+    "@thirdweb-dev/react": "latest",
+    "@thirdweb-dev/sdk": "latest",
     "ethers": "^5.7.2",
     "install": "^0.13.0",
     "next": "^13.0.6",

@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }) {
     // </ThirdwebWeb3Provider>
 
     <ThirdwebProvider
-    desiredChainId={desiredChainId}
+    activeChain={"goerli"}
     >
       <Component {...pageProps} />
     </ThirdwebProvider>

@@ -6,7 +6,7 @@ import { CgWebsite } from 'react-icons/cg'
 import { AiOutlineInstagram, AiOutlineTwitter } from 'react-icons/ai'
 import { HiDotsVertical } from 'react-icons/hi'
 import NFTCard from '../../components/NFTCard'
-import { useContract, useActiveListings } from '@thirdweb-dev/react'
+import { useContract, useValidDirectListings } from '@thirdweb-dev/react'
 
 const style = {
   bannerImageContainer: `h-[30vh] w-screen overflow-hidden flex justify-center items-center`,
@@ -36,10 +36,9 @@ const Collection = () => {
   const { collectionId } = router.query
   const [collection, setCollection] = useState({})
   const [nfts, setNfts] = useState([])
-  const { contract:marketPlace } = useContract("0xF0511192a0557f9F4f00aA1FE5C47d14149C250c", "marketplace")
-  const {data:listings} = useActiveListings(marketPlace);
+  const { contract:marketPlace } = useContract("0x7B4a7bD31D031Bd777a7cB4fcfE09476BB0bb740", "marketplace-v3")
+  const {data:listings} = useValidDirectListings(marketPlace);
 
-  
   const fetchCollectionData = async (sanityClient = client) => {
     const query = `*[_type == "marketItems" && contractAddress == "${collectionId}" ] {
       "imageUrl": profileImage.asset->url,
@@ -55,7 +54,6 @@ const Collection = () => {
 
     const collectionData = await sanityClient.fetch(query)
 
-
     // the query returns 1 object inside of an array
     await setCollection(collectionData[0])
   }
@@ -63,7 +61,6 @@ const Collection = () => {
   useEffect(() => {
     fetchCollectionData()
   }, [collectionId])
-
 
   return (
     <div className="overflow-hidden">

@@ -5,7 +5,7 @@ import NFTImage from '../../components/nft/NFTImages'
 import GeneralDetails from '../../components/nft/GeneralDetails'
 import ItemActivity from '../../components/nft/ItemActivity'
 import Purchase from '../../components/nft/Purchase'
-import { useContract, useActiveListings } from '@thirdweb-dev/react'
+import { useContract, useValidDirectListings } from '@thirdweb-dev/react'
 
 
 const style = {
@@ -22,8 +22,8 @@ const Nft = () => {
   const router = useRouter()
   const { nftId } = router.query
   const collectionId = "0x66Eb8F1c2D5a8d38b461013cA7A2830497331590"
-  const { contract:marketPlace } = useContract("0xF0511192a0557f9F4f00aA1FE5C47d14149C250c", "marketplace")
-  const {data:listings} = useActiveListings(marketPlace);
+  const { contract:marketPlace } = useContract("0x7B4a7bD31D031Bd777a7cB4fcfE09476BB0bb740", "marketplace-v3")
+  const {data:listings} = useValidDirectListings(marketPlace);
 
   const nftFilter = (list) => {
     for(let item of list){

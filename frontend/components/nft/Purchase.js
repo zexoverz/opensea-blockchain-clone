@@ -6,7 +6,7 @@ import toast, { Toaster } from 'react-hot-toast'
 
 import {
   useMetamask,
-  useNetwork,
+  useSwitchChain,
   useNetworkMismatch,
   useAddress
 } from "@thirdweb-dev/react";
@@ -33,7 +33,7 @@ const MakeOffer = ({ isListed, selectedNft, listings, marketPlaceModule,  }) => 
 
   // Hooks to detect user is on the right network and switch them if they are not
   const networkMismatch = useNetworkMismatch();
-  const [, switchNetwork] = useNetwork();
+  const switchChain = useSwitchChain();
 
   useEffect(() => {
     if (!listings || isListed === 'false' || !selectedNft) return
@@ -95,7 +95,7 @@ const MakeOffer = ({ isListed, selectedNft, listings, marketPlaceModule,  }) => 
     try{
       // Ensure user is on the correct network
       if (networkMismatch) {
-        switchNetwork && switchNetwork(ChainId.Goerli);
+        switchChain && switchChain(ChainId.Goerli);
         return;
       }
 

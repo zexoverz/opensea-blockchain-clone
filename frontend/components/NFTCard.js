@@ -32,7 +32,8 @@ const NFTCard = ({nftItem, title, listings}) => {
 
     if (Boolean(listing)) {
       setIsListed(true)
-      setPrice(listing.buyoutCurrencyValuePerToken.displayValue)
+      console.log(listing, "LISTING card")
+      setPrice(listing.currencyValuePerToken.displayValue)
     }
   }, [listings, nftItem])
   
